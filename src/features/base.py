@@ -1,9 +1,13 @@
 from abc import ABC, abstractmethod
+from itertools import accumulate
 from typing import Optional, List, Tuple
 import pandas as pd
-from config import Config
-from utils import cum_concat
+from src.main.config import Config
 from fsrs_optimizer import remove_outliers, remove_non_continuous_rows  # type: ignore
+
+
+def cum_concat(x):
+    return list(accumulate(x))
 
 
 class BaseFeatureEngineer(ABC):

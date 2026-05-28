@@ -5,7 +5,7 @@ import importlib
 import torch
 
 
-fsrs_extension = importlib.import_module("parallel._fsrs_extension")
+fsrs_extension = importlib.import_module("src.main._fsrs_extension")
 THREADS_PER_BLOCK = int(fsrs_extension.threads_per_block())
 
 

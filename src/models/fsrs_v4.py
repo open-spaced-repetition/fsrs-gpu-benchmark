@@ -1,8 +1,8 @@
 from typing import List
 import torch
 from torch import nn, Tensor
-from models.fsrs_v3 import FSRS3, FSRS3ParameterClipper
-from config import Config
+from src.models.fsrs_v3 import FSRS3, FSRS3ParameterClipper
+from src.main.config import Config
 import pandas as pd
 from tqdm.auto import tqdm  # type: ignore
 import numpy as np

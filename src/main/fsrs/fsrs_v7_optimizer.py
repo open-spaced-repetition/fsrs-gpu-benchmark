@@ -4,7 +4,7 @@ from typing import NamedTuple
 
 import torch
 
-from parallel.fsrs import fsrs_v7_constants
+from src.main.fsrs import fsrs_v7_constants
 
 class AdamWState(NamedTuple):
     step: torch.Tensor

@@ -20,24 +20,23 @@ import torch
 from sklearn.model_selection import TimeSeriesSplit  # type: ignore
 from tqdm.auto import tqdm  # type: ignore
 
-from config import Config, create_parser
-from features import create_features
-from parallel.config import (
+from src.main.config import Config, create_parser
+from src.features import create_features
+from src.main.config import (
     LMDB_PATH,
     LMDB_SIZE,
     N_SPLITS,
     USER_MAX_TRAIN_SPLIT_LENGTHS_KEY,
 )
-from models.model_factory import create_model
-from parallel.tensor_lmdb import (
+from src.models.model_factory import create_model
+from src.main.tensor_lmdb import (
     get_tensor,
     put_tensor,
     tensor_field_keys,
     user_done_key,
     user_tensor_prefix,
 )
-from parallel.tensors import UserTensorBlob
-from utils import rmse_matrix_bin_key
+from src.main.tensors import UserTensorBlob
 
 
 SECONDS_PER_DAY = 86_400
@@ -46,6 +45,28 @@ BATCH_LOADER_SEED = 2023
 lmdb_env: lmdb.Environment | None = None
 worker_config: Config | None = None
 USER_TENSOR_FIELDS = tuple(field.name for field in fields(UserTensorBlob))
+
+
+def rmse_matrix_bin_key(row):
+    delta_t = round(
+        2.48
+        * np.power(3.62, np.floor(np.log(max(row["elapsed_days"], 1e-6)) / np.log(3.62))),
+        2,
+    )
+    i = round(1.99 * np.power(1.89, np.floor(np.log(row["i"]) / np.log(1.89))), 0)
+    rmse_bins_lapse = (
+        round(
+            1.65
+            * np.power(
+                1.73,
+                np.floor(np.log(row["rmse_bins_lapse"]) / np.log(1.73)),
+            ),
+            0,
+        )
+        if row["rmse_bins_lapse"] != 0
+        else 0
+    )
+    return (delta_t, i, rmse_bins_lapse)
 
 
 class BenchmarkTensors(NamedTuple):

@@ -1,24 +1,7 @@
-from features.logistic_regression_engineer import LogisticRegressionEngineer
-
 from .base import BaseFeatureEngineer
 from .fsrs_engineer import FSRSFeatureEngineer
-from .fsrs_one_step_engineer import FSRSOneStepFeatureEngineer
-from .lstm_engineer import LSTMFeatureEngineer
-from .dash_engineer import (
-    DashFeatureEngineer,
-    DashMCMFeatureEngineer,
-    DashACTRFeatureEngineer,
-)
-from .neural_engineer import (
-    GRUPFeatureEngineer,
-    HLRFeatureEngineer,
-    ACTRFeatureEngineer,
-    NN17FeatureEngineer,
-)
-from .memory_engineer import SM2FeatureEngineer, EbisuFeatureEngineer
-from .simple_engineer import AVGFeatureEngineer, RMSEBinsExploitFeatureEngineer
-from config import Config, ModelName
-from typing import Type, get_args
+from src.main.config import Config, ModelName
+from typing import Type
 
 
 FEATURE_ENGINEER_REGISTRY: dict[ModelName, Type[BaseFeatureEngineer]] = {
@@ -31,32 +14,7 @@ FEATURE_ENGINEER_REGISTRY: dict[ModelName, Type[BaseFeatureEngineer]] = {
     "FSRS-5": FSRSFeatureEngineer,
     "FSRS-6": FSRSFeatureEngineer,
     "FSRS-7": FSRSFeatureEngineer,
-    "FSRS-rs": FSRSFeatureEngineer,
-    "FSRS-6-one-step": FSRSOneStepFeatureEngineer,
-    "RNN": FSRSFeatureEngineer,
-    "GRU": FSRSFeatureEngineer,
-    "Transformer": FSRSFeatureEngineer,
-    "SM2-trainable": FSRSFeatureEngineer,
-    "Anki": FSRSFeatureEngineer,
-    "90%": FSRSFeatureEngineer,
-    # Specialized models
-    "LogisticRegression": LogisticRegressionEngineer,
-    "LSTM": LSTMFeatureEngineer,
-    "GRU-P": GRUPFeatureEngineer,
-    "HLR": HLRFeatureEngineer,
-    "ACT-R": ACTRFeatureEngineer,
-    "NN-17": NN17FeatureEngineer,
-    # DASH variants
-    "DASH": DashFeatureEngineer,
-    "DASH[MCM]": DashMCMFeatureEngineer,
-    "DASH[ACT-R]": DashACTRFeatureEngineer,
-    # Memory models that don't use tensors
-    "SM2": SM2FeatureEngineer,
-    "Ebisu-v2": EbisuFeatureEngineer,
-    # Simple models that only need basic features
-    "AVG": AVGFeatureEngineer,
-    "MOVING-AVG": AVGFeatureEngineer,
-    "RMSE-BINS-EXPLOIT": RMSEBinsExploitFeatureEngineer,
+    "FSRS-6-one-step": FSRSFeatureEngineer,
 }
 
 
@@ -87,4 +45,4 @@ def get_supported_models() -> tuple[str, ...]:
     Returns:
         List of supported model names
     """
-    return get_args(ModelName)
+    return tuple(FEATURE_ENGINEER_REGISTRY.keys())

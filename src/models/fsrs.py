@@ -1,7 +1,7 @@
 import torch
 from torch import Tensor
-from config import Config
-from models.base import BaseModel, BaseParameterClipper
+from src.main.config import Config
+from src.models.base import BaseModel, BaseParameterClipper
 
 
 class FSRSParameterClipper(BaseParameterClipper):

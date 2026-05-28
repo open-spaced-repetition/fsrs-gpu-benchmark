@@ -1,8 +1,8 @@
 from typing import Any, Dict, Union, List, Optional, cast
 import torch
-from config import Config, ModelName
+from src.main.config import Config, ModelName
 
-from models import *
+from src.models import *
 
 
 MODEL_REGISTRY: dict[ModelName, Any] = {
@@ -14,32 +14,8 @@ MODEL_REGISTRY: dict[ModelName, Any] = {
     "FSRS-5": FSRS5,
     "FSRS-6": FSRS6,
     "FSRS-7": FSRS7,
-    "HLR": HLR,
-    "ACT-R": ACT_R,
-    "DASH": DASH,
-    "DASH[MCM]": DASH,  # DASH class handles the MCM variant via config.model_name
-    "DASH[ACT-R]": DASH_ACTR,
-    "SM2-trainable": SM2,
-    "Anki": Anki,
-    "RNN": RNN,
-    "GRU": RNN,  # GRU uses the RNN class definition as per original script
-    "LogisticRegression": LogisticRegression,
-    "LSTM": LSTM,
-    "GRU-P": GRU_P,
-    "Transformer": Transformer,
-    "NN-17": NN_17,
-    "90%": ConstantModel,
+    "FSRS-6-one-step": FSRS_one_step,
 }
-
-# Models NOT handled by this factory due to distinct processing flows in the original script:
-# - "SM2" (the non-trainable version)
-# - "Ebisu-v2"
-# - "AVG"
-# - "RMSE-BINS-EXPLOIT"
-# - "MOVING-AVG"
-# - "FSRS-rs" (Rust-based implementation with special handling)
-# - "FSRS-6-one-step"
-
 
 def create_model(
     config: Config,
@@ -75,17 +51,7 @@ def create_model(
     # Common arguments for all model constructors
     constructor_kwargs = {"config": config}
 
-    if model_name == "90%":  # ConstantModel
-        value = 0.9
-        if model_params is not None:
-            if not isinstance(model_params, (float, int)):
-                raise TypeError(
-                    f"For {model_name}, model_params must be a float/int, got {type(model_params)}"
-                )
-            value = float(model_params)
-        instance = model_cls(value=value, **constructor_kwargs)  # type: ignore
-
-    elif hasattr(
+    if hasattr(
         model_cls, "init_w"
     ):  # FSRS-like models, HLR, ACT_R, DASH, SM2Trainable, Anki
         if model_params is not None:
@@ -100,30 +66,7 @@ def create_model(
         # This allows models to use their default parameter values
         instance = model_cls(**constructor_kwargs)  # type: ignore
 
-    elif model_name in [
-        "RNN",
-        "GRU",
-        "LSTM",
-        "GRU-P",
-        "Transformer",
-        "NN-17",
-    ]:  # Neural nets
-        if model_params is not None:
-            if not isinstance(model_params, dict):
-                raise TypeError(
-                    f"For {model_name}, model_params must be a state_dict (dict) or None, got {type(model_params)}"
-                )
-            constructor_kwargs["state_dict"] = model_params  # type: ignore
-        else:
-            constructor_kwargs["state_dict"] = None  # type: ignore
-        instance = model_cls(**constructor_kwargs)  # type: ignore
-    elif model_name in [
-        "LogisticRegression",
-    ]:
-        constructor_kwargs["state_dict"] = model_params  # type: ignore
-        instance = model_cls(**constructor_kwargs)  # type: ignore
     else:
-        # This case should ideally not be reached if all registered models are handled.
-        raise ValueError(f"Unhandled instantiation logic for model: {model_name}")
+        instance = model_cls(**constructor_kwargs)  # type: ignore
 
     return cast(TrainableModel, instance.to(config.device))

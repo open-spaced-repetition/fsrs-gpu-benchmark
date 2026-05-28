@@ -2,7 +2,7 @@ from typing import List, Union
 import torch
 from torch import nn, Tensor
 from typing import Optional
-from models.fsrs_v6 import FSRS6, FSRS6ParameterClipper
+from src.models.fsrs_v6 import FSRS6, FSRS6ParameterClipper
 import torch.nn.functional as F
 from torch.nn import Sigmoid
 import pandas as pd
@@ -11,9 +11,9 @@ from tqdm.auto import tqdm
 import time
 from scipy.optimize import minimize  # type: ignore
 
-from config import Config
+from src.main.config import Config
 
-from models.fsrs_v7_interval_penalty import fsrs7_interval_growth_penalty
+from src.models.fsrs_v7_interval_penalty import fsrs7_interval_growth_penalty
 
 # scheduling penalty 1 penalizes huge interval growth for non-same-day reviews, makes log loss worse
 # scheduling penalty 2 penalizes short (<10 minutes) intervals at 99% DR, makes log loss worse

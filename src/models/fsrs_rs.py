@@ -7,7 +7,7 @@ within the benchmark framework.
 
 from typing import List, Optional
 import pandas as pd
-from config import Config
+from src.main.config import Config
 
 
 def convert_to_items(df: pd.DataFrame, config: Config):

@@ -3,7 +3,7 @@ from typing import Any, Mapping
 import torch
 from torch import nn, Tensor
 import pandas as pd
-from config import Config
+from src.main.config import Config
 from .trainable import ModelState
 
 

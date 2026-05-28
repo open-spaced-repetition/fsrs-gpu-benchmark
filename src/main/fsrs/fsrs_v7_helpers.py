@@ -1,6 +1,6 @@
 import torch
 
-from parallel.fsrs import fsrs_v7_constants
+from src.main.fsrs import fsrs_v7_constants
 
 def get_initial_params_for_optimization():
     return torch.tensor(fsrs_v7_constants.FSRS7_DEFAULT_35_VALUES, dtype=torch.float32)

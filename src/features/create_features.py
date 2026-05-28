@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import TimeSeriesSplit  # type: ignore
 from .factory import create_feature_engineer
-from config import Config
+from src.main.config import Config
 
 
 def create_features(df: pd.DataFrame, config: Config) -> pd.DataFrame:

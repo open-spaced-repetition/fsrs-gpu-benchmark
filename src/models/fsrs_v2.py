@@ -1,9 +1,9 @@
 from typing import List, Optional
 import torch
 from torch import nn, Tensor
-from models.fsrs_v1 import FSRS1, FSRS1ParameterClipper
+from src.models.fsrs_v1 import FSRS1, FSRS1ParameterClipper
 
-from config import Config
+from src.main.config import Config
 
 
 class FSRS2ParameterClipper(FSRS1ParameterClipper):

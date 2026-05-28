@@ -6,8 +6,8 @@ from tqdm.auto import tqdm
 import numpy as np
 from scipy.optimize import minimize
 
-from config import Config
-from models.base import BaseModel
+from src.main.config import Config
+from src.models.base import BaseModel
 from fsrs_optimizer import DEFAULT_PARAMETER
 
 

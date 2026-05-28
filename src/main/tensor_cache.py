@@ -12,7 +12,7 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
-from parallel.config import (
+from src.main.config import (
     BATCH_PERM_SEED,
     BATCH_SIZE,
     N_EPOCHS,
@@ -21,14 +21,14 @@ from parallel.config import (
     TENSOR_CACHE_SIZE,
     TENSOR_CACHE_VERSION,
 )
-from parallel.tensor_lmdb import (
+from src.main.tensor_lmdb import (
     get_array,
     get_tensor,
     get_tensor_meta,
     put_array_to_env,
     user_tensor_prefix,
 )
-from parallel.tensors import Data, ReviewData
+from src.main.tensors import Data, ReviewData
 
 
 @dataclass(frozen=True)

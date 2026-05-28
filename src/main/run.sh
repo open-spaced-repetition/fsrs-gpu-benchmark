@@ -4,7 +4,7 @@ set -euo pipefail
 start_ns=$(date +%s%N)
 
 python setup.py -q build_ext --inplace
-python -m parallel.run
+python -m src.main.run
 
 end_ns=$(date +%s%N)
 elapsed_ms=$(((end_ns - start_ns) / 1000000))

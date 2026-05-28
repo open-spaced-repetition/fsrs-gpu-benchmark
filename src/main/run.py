@@ -9,8 +9,8 @@ import torch
 from tqdm import tqdm
 import time
 
-from parallel import srs_ops
-from parallel.config import (
+from src.main import srs_ops
+from src.main.config import (
     BATCH_SIZE,
     LMDB_PATH,
     LMDB_SIZE,
@@ -24,16 +24,16 @@ from parallel.config import (
     WRITE_RESULT,
     WRITE_RESULT_FILE,
 )
-from parallel.fsrs import fsrs_v7_scheduler
-from parallel.fsrs import fsrs_v7_constants, fsrs_v7_helpers, fsrs_v7_optimizer
-from parallel.result_metrics import (
+from src.main.fsrs import fsrs_v7_scheduler
+from src.main.fsrs import fsrs_v7_constants, fsrs_v7_helpers, fsrs_v7_optimizer
+from src.main.result_metrics import (
     FsrsParamSummary,
     flatten_fsrs_params_for_summary,
     format_param_stat,
     summarize_fsrs_param_parts,
     write_user_result_jsonl,
 )
-from parallel.tensor_cache import (
+from src.main.tensor_cache import (
     TrainSetup,
     build_batch_perm_cat_for_users,
     load_cached_review_data,
@@ -41,7 +41,7 @@ from parallel.tensor_cache import (
     load_cached_train_only,
     load_or_rebuild_tensor_cache,
 )
-from parallel.tensors import Data, ParamKey
+from src.main.tensors import Data, ParamKey
 
 fsrs_extension = srs_ops.fsrs_extension
 THREADS_PER_BLOCK = srs_ops.THREADS_PER_BLOCK

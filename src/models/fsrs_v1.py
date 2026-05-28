@@ -3,8 +3,8 @@ import torch
 from torch import nn, Tensor
 from typing import Optional
 
-from config import Config
-from models.fsrs import FSRS, FSRSParameterClipper
+from src.main.config import Config
+from src.models.fsrs import FSRS, FSRSParameterClipper
 
 
 class FSRS1ParameterClipper(FSRSParameterClipper):

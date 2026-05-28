@@ -5,7 +5,7 @@ Requirements:
 Prepare the dataset.
 
 ```sh
-docker compose --progress quiet run --rm srs-benchmark python -m parallel.prepare --processes 10
+docker compose --progress quiet run --rm srs-benchmark python -m src.main.prepare --processes 10
 ```
 
 If you encounter issues on WSL when preparing the dataset such as `concurrent.futures.process.BrokenProcessPool`, try one of:
@@ -16,5 +16,5 @@ If you encounter issues on WSL when preparing the dataset such as `concurrent.fu
 Run training and evaluation.
 
 ```sh
-docker compose --progress quiet run --rm srs-benchmark parallel/run.sh
+docker compose --progress quiet run --rm srs-benchmark bash src/main/run.sh
 ```

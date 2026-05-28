@@ -3,7 +3,7 @@ from typing_extensions import Self
 import torch
 from torch import Tensor
 import pandas as pd
-from config import Config
+from src.main.config import Config
 
 ParameterList: TypeAlias = list[float]
 TorchStateDict: TypeAlias = Mapping[str, Any]

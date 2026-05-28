@@ -2,9 +2,9 @@ from typing import List
 import torch
 from torch import Tensor
 from typing import Optional
-from models.fsrs_v4 import FSRS4, FSRS4ParameterClipper
+from src.models.fsrs_v4 import FSRS4, FSRS4ParameterClipper
 
-from config import Config
+from src.main.config import Config
 
 
 class FSRS4dot5ParameterClipper(FSRS4ParameterClipper):
