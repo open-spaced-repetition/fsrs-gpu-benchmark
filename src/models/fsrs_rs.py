@@ -7,10 +7,10 @@ within the benchmark framework.
 
 from typing import List, Optional
 import pandas as pd
-from src.prepare.prepare_config import PrepareConfig
+from src.prepare.prepare_config import Config
 
 
-def convert_to_items(df: pd.DataFrame, config: PrepareConfig):
+def convert_to_items(df: pd.DataFrame, config: Config):
     """
     Convert a pandas DataFrame to a list of FSRSItem objects for fsrs-rs.
 
@@ -65,7 +65,7 @@ def convert_to_items(df: pd.DataFrame, config: PrepareConfig):
 class FSRSRsBackend:
     """Wrapper for FSRS-rs backend."""
 
-    def __init__(self, config: PrepareConfig):
+    def __init__(self, config: Config):
         """
         Initialize FSRS-rs backend.
 

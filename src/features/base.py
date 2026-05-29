@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from itertools import accumulate
 from typing import Optional, List, Tuple
 import pandas as pd
-from src.prepare.prepare_config import PrepareConfig
+from src.prepare.prepare_config import Config
 from fsrs_optimizer import remove_outliers, remove_non_continuous_rows  # type: ignore
 
 
@@ -16,7 +16,7 @@ class BaseFeatureEngineer(ABC):
     Each specific model feature engineer should inherit from this class and implement the corresponding methods
     """
 
-    def __init__(self, config: PrepareConfig):
+    def __init__(self, config: Config):
         """
         Initialize the feature engineer
 

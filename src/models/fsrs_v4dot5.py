@@ -4,7 +4,7 @@ from torch import Tensor
 from typing import Optional
 from src.models.fsrs_v4 import FSRS4, FSRS4ParameterClipper
 
-from src.prepare.prepare_config import PrepareConfig
+from src.prepare.prepare_config import Config
 
 
 class FSRS4dot5ParameterClipper(FSRS4ParameterClipper):
@@ -34,7 +34,7 @@ class FSRS4dot5(FSRS4):
     decay = -0.5
     factor = 0.9 ** (1 / decay) - 1
 
-    def __init__(self, config: PrepareConfig, w: Optional[List[float]] = None):
+    def __init__(self, config: Config, w: Optional[List[float]] = None):
         # Handle dynamic weight selection based on PrepareConfig
         if w is None:
             if not config.use_secs_intervals:

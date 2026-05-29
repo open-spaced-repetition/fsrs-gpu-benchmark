@@ -6,7 +6,7 @@ from tqdm.auto import tqdm
 import numpy as np
 from scipy.optimize import minimize
 
-from src.prepare.prepare_config import PrepareConfig
+from src.prepare.prepare_config import Config
 from src.models.base import BaseModel
 from fsrs_optimizer import DEFAULT_PARAMETER
 
@@ -17,7 +17,7 @@ S_MIN = 0.001
 class FSRS_one_step(BaseModel):
     init_w = DEFAULT_PARAMETER
 
-    def __init__(self, config: PrepareConfig, w: List[float] = init_w):
+    def __init__(self, config: Config, w: List[float] = init_w):
         super().__init__(config)
         self.w = w.copy()
         self.lr = 1e-4

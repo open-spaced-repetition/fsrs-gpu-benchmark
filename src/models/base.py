@@ -3,7 +3,7 @@ from typing import Any, Mapping
 import torch
 from torch import nn, Tensor
 import pandas as pd
-from src.prepare.prepare_config import PrepareConfig
+from src.prepare.prepare_config import Config
 from .trainable import ModelState
 
 
@@ -21,7 +21,7 @@ class BaseModel(nn.Module):
     n_epoch: int = 5
     clipper: BaseParameterClipper = BaseParameterClipper()
 
-    def __init__(self, config: PrepareConfig):
+    def __init__(self, config: Config):
         super().__init__()
         self.config = config
 

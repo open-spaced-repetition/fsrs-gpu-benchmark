@@ -64,7 +64,7 @@ def _parse_cuda_devices(raw: str | None) -> list[int] | None:
     return [int(part) for part in re.split(r"[,\s]+", value) if part]
 
 
-class PrepareConfig:
+class Config:
     def __init__(self, args: argparse.Namespace):
         self.raw_args = args
         self.dev_mode: bool = args.dev

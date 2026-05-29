@@ -1,6 +1,6 @@
 from typing import Any, Dict, Union, List, Optional, cast
 import torch
-from src.prepare.prepare_config import ModelName, PrepareConfig
+from src.prepare.prepare_config import ModelName, Config
 
 from src.models import *
 
@@ -18,7 +18,7 @@ MODEL_REGISTRY: dict[ModelName, Any] = {
 }
 
 def create_model(
-    config: PrepareConfig,
+    config: Config,
     model_params: Optional[Union[List[float], Dict[str, torch.Tensor], float]] = None,
 ) -> TrainableModel:
     """
