@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 struct fsrs_state_t {
     float s;
     float d;
@@ -49,3 +51,24 @@ struct fsrs_params_t {
     float s_weight_power1;
     float s_weight_power2;
 };
+
+__device__
+fsrs_state_t fsrs7_init(
+    const fsrs_params_t &fsrs_params,
+    const int8_t first_rating
+);
+
+__device__
+fsrs_state_t fsrs7_step(
+    const fsrs_params_t &fsrs_params,
+    const fsrs_state_t fsrs_state,
+    const float elapsed_time,
+    const int8_t rating
+);
+
+__device__
+float fsrs7_forgetting_curve(
+    const fsrs_params_t &fsrs_params,
+    const float elapsed_time,
+    const fsrs_state_t &state
+);
