@@ -3,16 +3,16 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import TimeSeriesSplit  # type: ignore
 from .factory import create_feature_engineer
-from src.main.config import Config
+from src.prepare.prepare_config import PrepareConfig
 
 
-def create_features(df: pd.DataFrame, config: Config) -> pd.DataFrame:
+def create_features(df: pd.DataFrame, config: PrepareConfig) -> pd.DataFrame:
     """
     Refactored create_features function using the new feature engineering architecture
 
     Args:
         df: Input dataframe with review logs
-        config: Configuration object containing model name and other parameters
+        PrepareConfig: Configuration object containing model name and other parameters
 
     Returns:
         Processed dataframe with model-specific features
@@ -31,7 +31,7 @@ def _create_features_standard(df: pd.DataFrame, config) -> pd.DataFrame:
 
     Args:
         df: Input dataframe
-        config: Configuration object
+        PrepareConfig: Configuration object
 
     Returns:
         Processed dataframe
@@ -46,7 +46,7 @@ def _create_features_standard(df: pd.DataFrame, config) -> pd.DataFrame:
 
 
 def _create_features_with_equalized_test(
-    df: pd.DataFrame, config: Config
+    df: pd.DataFrame, config: PrepareConfig
 ) -> pd.DataFrame:
     """
     Create features with equalized test handling for seconds intervals
@@ -54,7 +54,7 @@ def _create_features_with_equalized_test(
 
     Args:
         df: Input dataframe
-        config: Configuration object
+        PrepareConfig: Configuration object
 
     Returns:
         Processed dataframe with split indicators

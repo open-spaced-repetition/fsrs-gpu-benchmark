@@ -11,7 +11,7 @@ from tqdm.auto import tqdm
 import time
 from scipy.optimize import minimize  # type: ignore
 
-from src.main.config import Config
+from src.prepare.prepare_config import PrepareConfig
 
 from src.models.fsrs_v7_interval_penalty import fsrs7_interval_growth_penalty
 
@@ -129,7 +129,7 @@ class FSRS7(FSRS6):
         0.3862,
     ]
 
-    def __init__(self, config: Config, w: Optional[List[float]] = None):
+    def __init__(self, config: PrepareConfig, w: Optional[List[float]] = None):
         super().__init__(config)
         if w is None:
             w = self.init_w

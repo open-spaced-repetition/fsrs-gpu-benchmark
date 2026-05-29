@@ -20,7 +20,7 @@ import torch
 from sklearn.model_selection import TimeSeriesSplit  # type: ignore
 from tqdm.auto import tqdm  # type: ignore
 
-from src.main.config import Config, create_parser
+from src.prepare.prepare_config import PrepareConfig, create_parser
 from src.features import create_features
 from src.main.config import (
     LMDB_PATH,
@@ -43,7 +43,7 @@ SECONDS_PER_DAY = 86_400
 BATCH_LOADER_SEED = 2023
 
 lmdb_env: lmdb.Environment | None = None
-worker_config: Config | None = None
+worker_config: PrepareConfig | None = None
 USER_TENSOR_FIELDS = tuple(field.name for field in fields(UserTensorBlob))
 
 
@@ -121,7 +121,7 @@ def get_max_train_split_length(blob: UserTensorBlob) -> int:
     return int(blob.train_split_lengths.max().item())
 
 
-def is_current_user_blob(blob: UserTensorBlob, config: Config) -> bool:
+def is_current_user_blob(blob: UserTensorBlob, config: PrepareConfig) -> bool:
     if blob.card_sorted_index.numel() != blob.rating.numel():
         return False
     if blob.seq_len.numel() != blob.rating.numel():
@@ -180,7 +180,7 @@ def _open_lmdb_env(
 def init_worker(
     lmdb_path: Path,
     lmdb_size: int,
-    config: Config,
+    config: PrepareConfig,
 ) -> None:
     global lmdb_env, worker_config
     signal.signal(signal.SIGINT, signal.SIG_IGN)
@@ -276,21 +276,6 @@ def empty_benchmark_tensors() -> BenchmarkTensors:
         train_split_lengths=empty_int32,
     )
 
-
-def build_batch_order(batch_count: int) -> np.ndarray:
-    if batch_count == 0:
-        return np.array([], dtype=np.int32)
-
-    generator = torch.Generator()
-    generator.manual_seed(BATCH_LOADER_SEED)
-    return np.concatenate(
-        [
-            torch.randperm(batch_count, generator=generator).numpy()
-            for _ in range(BATCH_ORDER_EPOCHS)
-        ]
-    ).astype(np.int32)
-
-
 def get_training_layout(
     train_set: pd.DataFrame,
     batch_size: int,
@@ -326,7 +311,7 @@ def concat_int32(arrays: list[np.ndarray]) -> np.ndarray:
 
 def build_benchmark_tensors(
     df: pd.DataFrame,
-    config: Config,
+    config: PrepareConfig,
     raw_to_grouped_index: np.ndarray,
 ) -> BenchmarkTensors:
     feature_df = create_features(df.copy(), config=config)
@@ -394,7 +379,7 @@ def process_user(user_id: int) -> int:
     if lmdb_env is None:
         raise RuntimeError("LMDB environment was not initialized.")
     if worker_config is None:
-        raise RuntimeError("Worker config was not initialized.")
+        raise RuntimeError("Worker PrepareConfig was not initialized.")
 
     user_keys = get_user_keys(user_id)
     with lmdb_env.begin(write=False) as txn:
@@ -438,7 +423,7 @@ def main() -> None:
     parser = create_parser()
     parser.set_defaults(algo="FSRS-7", short=True, secs=True)
     args, _ = parser.parse_known_args()
-    config = Config(args)
+    config = PrepareConfig(args)
     user_ids = list(range(1, 10001))
 
     executor = ProcessPoolExecutor(

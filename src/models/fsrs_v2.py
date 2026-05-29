@@ -3,7 +3,7 @@ import torch
 from torch import nn, Tensor
 from src.models.fsrs_v1 import FSRS1, FSRS1ParameterClipper
 
-from src.main.config import Config
+from src.prepare.prepare_config import PrepareConfig
 
 
 class FSRS2ParameterClipper(FSRS1ParameterClipper):
@@ -32,7 +32,7 @@ class FSRS2(FSRS1):
     init_w = [1, 1, 1, -1, -1, 0.2, 3, -0.8, -0.2, 1.3, 2.6, -0.2, 0.6, 1.5]
     clipper = FSRS2ParameterClipper()
 
-    def __init__(self, config: Config, w: List[float] = init_w):
+    def __init__(self, config: PrepareConfig, w: List[float] = init_w):
         super().__init__(config)
         self.w = nn.Parameter(torch.tensor(w, dtype=torch.float32))
 

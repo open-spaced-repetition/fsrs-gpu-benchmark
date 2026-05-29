@@ -1,6 +1,6 @@
 from .base import BaseFeatureEngineer
 from .fsrs_engineer import FSRSFeatureEngineer
-from src.main.config import Config, ModelName
+from src.prepare.prepare_config import ModelName, PrepareConfig
 from typing import Type
 
 
@@ -18,12 +18,12 @@ FEATURE_ENGINEER_REGISTRY: dict[ModelName, Type[BaseFeatureEngineer]] = {
 }
 
 
-def create_feature_engineer(config: Config) -> BaseFeatureEngineer:
+def create_feature_engineer(config: PrepareConfig) -> BaseFeatureEngineer:
     """
-    Factory function to create the appropriate feature engineer based on model name from config
+    Factory function to create the appropriate feature engineer based on model name from PrepareConfig
 
     Args:
-        config: Configuration object containing model_name and other settings
+        PrepareConfig: Configuration object containing model_name and other settings
 
     Returns:
         Appropriate feature engineer instance

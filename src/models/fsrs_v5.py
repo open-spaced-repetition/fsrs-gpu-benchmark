@@ -4,12 +4,12 @@ import torch
 from torch import nn, Tensor
 from typing import Optional
 
-from src.main.config import Config
+from src.prepare.prepare_config import PrepareConfig
 from src.models.fsrs_v4dot5 import FSRS4dot5, FSRS4dot5ParameterClipper
 
 
 class FSRS5ParameterClipper(FSRS4dot5ParameterClipper):
-    def __init__(self, config: Config):
+    def __init__(self, config: PrepareConfig):
         super().__init__()
         self.config = config
 
@@ -85,7 +85,7 @@ class FSRS5(FSRS4dot5):
         ]
     )
 
-    def __init__(self, config: Config, w: Optional[List[float]] = None):
+    def __init__(self, config: PrepareConfig, w: Optional[List[float]] = None):
         super().__init__(config)
         if w is None:
             w = self.init_w

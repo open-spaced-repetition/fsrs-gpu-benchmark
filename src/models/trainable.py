@@ -3,7 +3,7 @@ from typing_extensions import Self
 import torch
 from torch import Tensor
 import pandas as pd
-from src.main.config import Config
+from src.prepare.prepare_config import PrepareConfig
 
 ParameterList: TypeAlias = list[float]
 TorchStateDict: TypeAlias = Mapping[str, Any]
@@ -24,7 +24,7 @@ class TrainableModel(Protocol):
     lr: float
     wd: float
     n_epoch: int
-    config: Config
+    config: PrepareConfig
 
     def get_optimizer(
         self, lr: float, wd: float, betas: tuple = (0.9, 0.999)

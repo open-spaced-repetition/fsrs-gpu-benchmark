@@ -1,6 +1,6 @@
 import torch
 from torch import Tensor
-from src.main.config import Config
+from src.prepare.prepare_config import PrepareConfig
 from src.models.base import BaseModel, BaseParameterClipper
 
 
@@ -15,7 +15,7 @@ class FSRSParameterClipper(BaseParameterClipper):
 class FSRS(BaseModel):
     clipper = FSRSParameterClipper()
 
-    def __init__(self, config: Config):
+    def __init__(self, config: PrepareConfig):
         super().__init__(config)
 
     def forgetting_curve(self, t, s):

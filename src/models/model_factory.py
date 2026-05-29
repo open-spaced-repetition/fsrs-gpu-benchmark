@@ -1,6 +1,6 @@
 from typing import Any, Dict, Union, List, Optional, cast
 import torch
-from src.main.config import Config, ModelName
+from src.prepare.prepare_config import ModelName, PrepareConfig
 
 from src.models import *
 
@@ -18,14 +18,14 @@ MODEL_REGISTRY: dict[ModelName, Any] = {
 }
 
 def create_model(
-    config: Config,
+    config: PrepareConfig,
     model_params: Optional[Union[List[float], Dict[str, torch.Tensor], float]] = None,
 ) -> TrainableModel:
     """
     Creates and returns an instance of the specified model.
 
     Args:
-        config: The application configuration object.
+        PrepareConfig: The application configuration object.
         model_params: Optional parameters for model initialization.
                       - List[float]: For FSRS-like models' 'w' parameter.
                       - Dict[str, Tensor]: For neural models' state_dict.
