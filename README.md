@@ -1,7 +1,12 @@
-Requirements: 
+# Accelerated FSRS Benchmark
+
+Uses the GPU to accelerate srs-benchmark for FSRS.
+
+### Requirements
 - Linux or Windows with WSL, and Docker.
 - A CUDA device with compute capability 8.6 or newer.
 
+### Quickstart
 Prepare the dataset.
 
 ```sh
