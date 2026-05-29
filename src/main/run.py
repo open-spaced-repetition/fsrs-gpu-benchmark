@@ -425,7 +425,7 @@ def predict_test_set(fsrs_params: torch.Tensor, data: Data) -> torch.Tensor:
         dtype=fsrs_params.dtype,
     )
 
-    for l in tqdm(range(0, test_seq_len, batch_size), disable=HIDE_PROGRESS):
+    for l in tqdm(range(0, test_seq_len, batch_size), desc="Testing", disable=HIDE_PROGRESS):
         re = min(test_seq_len, l + batch_size)
         batch_fsrs_params = fsrs_params[param_keys.user_index[l:re], param_keys.split_index[l:re]]
         test_index_perm_slice = data.test_index[l:re]
