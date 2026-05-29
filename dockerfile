@@ -106,7 +106,7 @@ WORKDIR /app
 COPY --link pyproject.toml uv.lock ./
 
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked --no-install-project --no-install-package torch --python "${PYTHON_VERSION}" \
+    uv sync --locked --no-install-project --python "${PYTHON_VERSION}" \
     && uv pip install --python "${VIRTUAL_ENV}" \
         --index-url https://download.pytorch.org/whl/cu118 \
         "torch==2.7.1+cu118"
