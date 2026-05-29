@@ -1,6 +1,6 @@
 Requirements: 
 - Linux or Windows with WSL, and Docker.
-- A CUDA device.
+- A CUDA device with compute capability 8.6 or newer.
 
 Prepare the dataset.
 
