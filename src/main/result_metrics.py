@@ -15,6 +15,8 @@ from sklearn.metrics import (
 import torch
 from tqdm import tqdm
 
+from src.main.config import HIDE_PROGRESS
+
 
 @dataclass(frozen=True)
 class FsrsParamSummary:
@@ -122,7 +124,7 @@ def write_user_result_jsonl(
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with output_path.open("w", encoding="utf-8", newline="\n") as f:
-        for user in tqdm(sorted(users), desc="Writing to file"):
+        for user in tqdm(sorted(users), desc="Writing to file", disable=HIDE_PROGRESS):
             label = label_by_user[user]
             result = {
                 "metrics": metrics_for_user(

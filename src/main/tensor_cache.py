@@ -15,6 +15,7 @@ from tqdm import tqdm
 from src.main.config import (
     BATCH_PERM_SEED,
     BATCH_SIZE,
+    HIDE_PROGRESS,
     N_EPOCHS,
     N_SPLITS,
     TENSOR_CACHE_PATH,
@@ -229,7 +230,8 @@ def load_or_rebuild_tensor_cache(
         _ensure_batch_perm_cache(cache_env, user_splits)
         return cache_env
 
-    print("tensor cache miss; rebuilding")
+    if not HIDE_PROGRESS:
+        print("tensor cache miss; rebuilding")
     cache_env.close()
     _clear_cache_path(cache_path)
     cache_env = _open_cache_env(cache_path, map_size)
@@ -418,8 +420,9 @@ def _rebuild_tensor_cache(
         ("derived", lambda split_i, infos: _build_small_derived_tensors(cache_env, split_i, infos)),
     ]
 
-    for split_i, users in enumerate(tqdm(user_splits, desc="Tensor cache splits", smoothing=0.03)):
-        tqdm.write(f"rebuilding tensor cache split {split_i + 1}/{len(user_splits)} ({len(users)} users)")
+    for split_i, users in enumerate(tqdm(user_splits, desc="Tensor cache splits", smoothing=0.03, disable=HIDE_PROGRESS)):
+        if not HIDE_PROGRESS:
+            tqdm.write(f"rebuilding tensor cache split {split_i + 1}/{len(user_splits)} ({len(users)} users)")
         with source_env.begin(write=False) as source_txn:
             infos = [
                 _read_user_info(source_txn, user_id)
@@ -431,6 +434,7 @@ def _rebuild_tensor_cache(
             desc=f"Split {split_i + 1} tensors",
             leave=False,
             smoothing=0.03,
+            disable=HIDE_PROGRESS,
         )
         for step_name, build_step in step_progress:
             step_progress.set_postfix_str(step_name)
@@ -445,7 +449,8 @@ def _ensure_train_setup_cache(
     if _read_train_setup_manifest(cache_env) == expected:
         return
 
-    print("train setup cache miss; rebuilding")
+    if not HIDE_PROGRESS:
+        print("train setup cache miss; rebuilding")
     for split_i, _ in enumerate(user_splits):
         _build_train_setup(cache_env, split_i)
     _write_train_setup_manifest(cache_env, expected)
@@ -459,7 +464,8 @@ def _ensure_batch_perm_cache(
     if _read_batch_perm_manifest(cache_env) == expected:
         return
 
-    print("batch perm cache miss; rebuilding")
+    if not HIDE_PROGRESS:
+        print("batch perm cache miss; rebuilding")
     for split_i, users in enumerate(user_splits):
         with cache_env.begin(write=False, buffers=True) as cache_txn:
             num_training_steps_per_epoch = get_array(

@@ -12,6 +12,7 @@ import time
 from src.main import srs_ops
 from src.main.config import (
     BATCH_SIZE,
+    HIDE_PROGRESS,
     LMDB_PATH,
     LMDB_SIZE,
     DEVICE,
@@ -388,7 +389,7 @@ def train(
     step_i_cat = torch.zeros_like(num_training_steps_cat)
     flat_fsrs_params = fsrs_params.view(-1, fsrs_params.size(-1))
     optim_state = fsrs_v7_optimizer.init_adamw_state(flat_fsrs_params)
-    for iter in tqdm(range(train_splits_length_cat_max), desc="Training", smoothing=0.06):
+    for iter in tqdm(range(train_splits_length_cat_max), desc="Training", smoothing=0.06, disable=HIDE_PROGRESS):
         flat_fsrs_params, optim_state, step_i_cat = train_iter(
             flat_fsrs_params,
             optim_state,
@@ -424,7 +425,7 @@ def predict_test_set(fsrs_params: torch.Tensor, data: Data) -> torch.Tensor:
         dtype=fsrs_params.dtype,
     )
 
-    for l in tqdm(range(0, test_seq_len, batch_size)):
+    for l in tqdm(range(0, test_seq_len, batch_size), disable=HIDE_PROGRESS):
         re = min(test_seq_len, l + batch_size)
         batch_fsrs_params = fsrs_params[param_keys.user_index[l:re], param_keys.split_index[l:re]]
         test_index_perm_slice = data.test_index[l:re]
@@ -442,7 +443,6 @@ def predict_test_set(fsrs_params: torch.Tensor, data: Data) -> torch.Tensor:
 
 
 def evaluate_on_test_set(fsrs_params: torch.Tensor, users: list[int], data: Data) -> EvaluationResult:
-    print("eval on test")
     assert data.split_counts.size(0) == len(users)
     assert fsrs_params.size(0) == len(users)
 
@@ -548,10 +548,11 @@ def run_cached_split(
 ) -> EvaluationResult:
     user_indices = torch.tensor(user_subset, dtype=torch.int32) - 1
     split_work = int(user_max_train_split_lengths[user_indices].sum().item())
-    print(
-        f"Run split {split_i + 1}/{split_count}: "
-        f"users={len(user_subset)}, max_train_split_length_sum={split_work}"
-    )
+    if not HIDE_PROGRESS:
+        print(
+            f"Run split {split_i + 1}/{split_count}: "
+            f"users={len(user_subset)}"
+        )
 
     torch.cuda.empty_cache()
     review_data = load_cached_review_data(cache_env, split_i, DEVICE)
