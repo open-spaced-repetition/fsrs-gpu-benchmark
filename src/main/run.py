@@ -450,7 +450,7 @@ def evaluate_on_test_set(fsrs_params: torch.Tensor, users: list[int], data: Data
     torch.cuda.empty_cache()
 
     label = (data.review_data.rating[data.test_index] > 1).float()
-    loss = torch.nn.functional.binary_cross_entropy(p_concat, label, reduction='none')
+    loss = torch.nn.functional.binary_cross_entropy(p_concat.clamp(min=1e-7, max=1-1e-7), label, reduction='none')
     logloss_weighted_by_reviews = loss.mean()
     logloss_weighted_by_user = \
         (loss * torch.repeat_interleave(1.0 / data.test_index_lens, data.test_index_lens)).sum() / len(users)
